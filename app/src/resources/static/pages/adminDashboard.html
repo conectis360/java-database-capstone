@@ -1,0 +1,69 @@
+<!-- adminDashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="../assets/images/logo/logo.png" />
+    <title>Admin Dashboard</title>
+
+    <!-- Admin-specific and global stylesheets -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/adminDashboard.css">
+
+    <!-- Common and component scripts -->
+    <script src="../js/render.js" defer></script>
+    <script src="../js/util.js" defer></script>
+    <script src="../js/components/header.js" defer></script>
+    <script src="../js/components/footer.js" defer></script>
+    <script type="module" src="../js/components/modals.js"></script>
+</head>
+
+<body>
+<div class="container">
+    <div class="wrapper">
+        <div id="header"></div>
+        <main class="main-content">
+            <!-- Controls for managing the list of doctors -->
+            <input type="text" id="doctorSearchBar" class="searchBar" placeholder="Search for doctors by name..." />
+            <div class="filter-wrapper">
+                <select class="filter-select" id="filterSpecialty">
+                    <option value="">Filter by Specialty</option>
+                    <option value="Cardiologist">Cardiologist</option>
+                    <option value="Dermatologist">Dermatologist</option>
+                    <option value="Neurologist">Neurologist</option>
+                    <option value="Pediatrician">Pediatrician</option>
+                    <option value="Orthopedic">Orthopedic</option>
+                    <option value="Gynecologist">Gynecologist</option>
+                    <option value="Psychiatrist">Psychiatrist</option>
+                    <option value="Dentist">Dentist</option>
+                    <option value="Ophthalmologist">Ophthalmologist</option>
+                    <option value="Ent">ENT Specialist</option>
+                    <option value="Urologist">Urologist</option>
+                    <option value="Oncologist">Oncologist</option>
+                    <option value="Gastroenterologist">Gastroenterologist</option>
+                    <option value="General">General Physician</option>
+                </select>
+                <button id="addDoctorBtn" class="add-button">+ Add New Doctor</button>
+            </div>
+
+            <!-- Container where the list of doctors will be rendered -->
+            <div id="content"></div>
+        </main>
+        <div id="footer"></div>
+    </div>
+</div>
+
+<!-- Reusable modal for adding or viewing doctor details -->
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="closeModal">&times;</span>
+        <div id="modal-body"></div>
+    </div>
+</div>
+
+<!-- Admin-specific dashboard logic file -->
+<script type="module" src="../js/adminDashboard.js" defer></script>
+</body>
+
+</html>

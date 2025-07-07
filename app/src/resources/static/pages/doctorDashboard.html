@@ -1,0 +1,52 @@
+<!-- doctorDashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="../assets/images/logo/logo.png" />
+  <title>Doctor Dashboard</title>
+
+  <!-- Doctor-specific and global stylesheets -->
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/doctorDashboard.css">
+
+  <!-- Common and component scripts -->
+  <script src="../js/render.js" defer></script>
+  <script src="../js/util.js" defer></script>
+  <script src="../js/components/header.js" defer></script>
+  <script src="../js/components/footer.js" defer></script>
+  <script type="module" src="../js/components/modals.js"></script>
+</head>
+
+<body>
+<div class="container">
+  <div class="wrapper">
+    <div id="header"></div>
+    <main class="main-content">
+      <!-- Controls for managing appointments -->
+      <input type="text" id="appointmentSearchBar" class="searchBar" placeholder="Search for appointments by patient name..." />
+      <div class="filter-wrapper">
+        <input type="date" id="dateFilter" class="filter-date" />
+      </div>
+
+      <!-- Container where the list of appointments will be rendered -->
+      <div id="content"></div>
+    </main>
+    <div id="footer"></div>
+  </div>
+</div>
+
+<!-- Reusable modal for viewing patient details or prescriptions -->
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <span class="close" id="closeModal">&times;</span>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<!-- Doctor-specific dashboard logic file -->
+<script type="module" src="../js/doctorDashboard.js" defer></script>
+</body>
+
+</html>

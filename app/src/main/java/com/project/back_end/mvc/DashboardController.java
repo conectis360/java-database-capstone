@@ -1,30 +1,65 @@
 package com.project.back_end.mvc;
 
+import com.project.back_end.services.TokenValidationService;
+import com.project.back_end.models.Role; // Assuming you have a Role enum: ADMIN, DOCTOR
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+@RequestMapping("/")
 public class DashboardController {
 
-// 1. Set Up the MVC Controller Class:
-//    - Annotate the class with `@Controller` to indicate that it serves as an MVC controller returning view names (not JSON).
-//    - This class handles routing to admin and doctor dashboard pages based on token validation.
+    private final TokenValidationService tokenValidationService;
 
+    @Autowired
+    public DashboardController(TokenValidationService tokenValidationService) {
+        this.tokenValidationService = tokenValidationService;
+    }
 
-// 2. Autowire the Shared Service:
-//    - Inject the common `Service` class, which provides the token validation logic used to authorize access to dashboards.
+    /**
+     * Handles requests for the Admin Dashboard.
+     * Validates the provided JWT token and checks if the user has the ADMIN role.
+     *
+     * @param token The JWT token from the URL path.
+     * @return The name of the Thymeleaf template to render ("admin/adminDashboard") or a redirect to the login page.
+     */
+    @GetMapping("/adminDashboard/{token}")
+    public String adminDashboard(@PathVariable String token) {
+        // Validate the token and get the user's role
+        Role userRole = tokenValidationService.getRoleFromToken(token);
 
+        // Check if the token is valid and the role is ADMIN
+        if (tokenValidationService.isTokenValid(token) && userRole == Role.ADMIN) {
+            // If valid, serve the admin/adminDashboard.html template
+            return "admin/adminDashboard";
+        } else {
+            // If invalid or wrong role, redirect to the login page
+            return "redirect:/index.html"; // Or simply "redirect:/" if your login is at the root
+        }
+    }
 
-// 3. Define the `adminDashboard` Method:
-//    - Handles HTTP GET requests to `/adminDashboard/{token}`.
-//    - Accepts an admin's token as a path variable.
-//    - Validates the token using the shared service for the `"admin"` role.
-//    - If the token is valid (i.e., no errors returned), forwards the user to the `"admin/adminDashboard"` view.
-//    - If invalid, redirects to the root URL, likely the login or home page.
+    /**
+     * Handles requests for the Doctor Dashboard.
+     * Validates the provided JWT token and checks if the user has the DOCTOR role.
+     *
+     * @param token The JWT token from the URL path.
+     * @return The name of the Thymeleaf template to render ("doctor/doctorDashboard") or a redirect to the login page.
+     */
+    @GetMapping("/doctorDashboard/{token}")
+    public String doctorDashboard(@PathVariable String token) {
+        // Validate the token and get the user's role
+        Role userRole = tokenValidationService.getRoleFromToken(token);
 
-
-// 4. Define the `doctorDashboard` Method:
-//    - Handles HTTP GET requests to `/doctorDashboard/{token}`.
-//    - Accepts a doctor's token as a path variable.
-//    - Validates the token using the shared service for the `"doctor"` role.
-//    - If the token is valid, forwards the user to the `"doctor/doctorDashboard"` view.
-//    - If the token is invalid, redirects to the root URL.
-
-
+        // Check if the token is valid and the role is DOCTOR
+        if (tokenValidationService.isTokenValid(token) && userRole == Role.DOCTOR) {
+            // If valid, serve the doctor/doctorDashboard.html template
+            return "doctor/doctorDashboard";
+        } else {
+            // If invalid or wrong role, redirect to the login page
+            return "redirect:/index.html";
+        }
+    }
 }
