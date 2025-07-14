@@ -1,0 +1,48 @@
+# Name of the GitHub Actions workflow.
+name: Java Backend CI
+
+# Controls when the workflow will run.
+# It triggers on pushes and pull requests to the 'main' branch.
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel.
+jobs:
+  # This job is named 'build-and-lint-backend'.
+  build-and-lint-backend:
+    # The type of runner that the job will run on. 'ubuntu-latest' is a standard choice.
+    runs-on: ubuntu-latest
+
+    # A sequence of tasks that will be executed as part of the job.
+    steps:
+      # Step 1: Check out the repository code.
+      # This action allows the workflow to access your code.
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2: Set up JDK 17.
+      # This action sets up a Java environment. We specify version 17.
+      # It also configures caching for Maven dependencies to speed up subsequent builds.
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      # Step 3: Lint Java code with Checkstyle.
+      # This command runs the Checkstyle plugin configured in your pom.xml.
+      # The build will fail if there are any linting errors.
+      - name: Lint with Checkstyle
+        run: mvn checkstyle:check
+
+      # Step 4: Compile the project with Maven.
+      # The 'package' goal compiles the code, runs checks, and packages it into a .jar file.
+      # It's a comprehensive way to ensure the build is not broken.
+      # --batch-mode is used for non-interactive execution.
+      # -DskipTests skips running tests, as this step is focused only on compilation.
+      - name: Compile and Package
+        run: mvn --batch-mode package -DskipTests
